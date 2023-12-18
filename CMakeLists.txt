@@ -21,25 +21,19 @@ SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
 
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
-if(NOT TARGET geGL)
-   find_package(GPUEngine COMPONENTS geGL)
-endif()   
+find_package(GPUEngine COMPONENTS geGL geUtil geCore)
 
-if(NOT TARGET geUtil)
-   find_package(GPUEngine COMPONENTS geUtil)
-endif()   
+set(DEFAULT_RESOURCES_PATH "${CMAKE_CURRENT_LIST_DIR}/resources")
 
-if(NOT TARGET geCore)
-   find_package(GPUEngine COMPONENTS geCore)
-endif()  
+find_file(vertexShader vert.glsl
+        HINTS ${DEFAULT_RESOURCES_PATH}/shaders
+)
 
-if(NOT TARGET Qt5::Widgets OR NOT TARGET geGL)
-   return()
-endif()
+find_file(fragmentShader frag.glsl
+        HINTS ${DEFAULT_RESOURCES_PATH}/shaders
+)
 
-set(DEFAULT_RESOERCES_PATH "${CMAKE_CURRENT_LIST_DIR}/resources")
-
-set(${APP_NAME}_RESOURCES "${DEFAULT_RESOERCES_PATH}" CACHE PATH "Relative or absolute path to Application resources.")
+set(${APP_NAME}_RESOURCES "${DEFAULT_RESOURCES_PATH}" CACHE PATH "Relative or absolute path to Application resources.")
 
 set(HEADER_PATH src)
 set(SOURCE_PATH src)
@@ -47,6 +41,14 @@ get_filename_component(src_abs ${SOURCE_PATH} ABSOLUTE)
 
 set(SOURCE_FILES
    src/main.cpp
+   src/SolDemoWindow.h src/SolDemoWindow.cpp
+   src/EventHandler.h src/EventHandler.cpp
+   src/Scene.h src/Scene.cpp
+   src/SceneObject.h src/SceneObject.cpp
+   src/Renderer.h src/Renderer.cpp
+   src/Camera.h src/Camera.cpp
+   #TODO remove
+   src/Sphere.h src/Sphere.cpp
 )
 
 
@@ -56,6 +58,8 @@ target_link_libraries(${APP_NAME} Qt5::Widgets geGL geUtil geCore)
 
 
 target_include_directories(${APP_NAME} PUBLIC "src/")
+add_compile_definitions(FRAGMENT_SHADER=\"${fragmentShader}\" VERTEX_SHADER=\"${vertexShader}\")
+
 set_target_properties(${APP_NAME} PROPERTIES COMPILE_DEFINITIONS "APP_RESOURCES=\"${${APP_NAME}_RESOURCES}\"")
 # set_property(TARGET ${APP_NAME} PROPERTY FOLDER "${examples_folder_name}")
 
