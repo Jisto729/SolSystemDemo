@@ -9,9 +9,13 @@ namespace ssd {
 		inline std::vector<float> getVertices() { return vertices; };
 		inline std::vector<float> getColors() { return colors; };
 		inline std::vector<int> getIndices() { return indices; };
+
+		void moveObject(float dx, float dy, float dz);
 	private:
 		std::vector<float> vertices;
 		std::vector<float> colors;
 		std::vector<int> indices;
+
+		void updateBuffers();
 	};
 }

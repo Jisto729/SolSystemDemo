@@ -1,11 +1,13 @@
 ﻿#pragma once
 
 #include <QtGui/QWindow>
+//#include <Q>
 #include <geGL/geGL.h>
 #include <memory>
 #include "Camera.h"
 #include "Renderer.h"
 #include "EventHandler.h"
+#include "Scene.h"
 
 
 namespace ssd
@@ -32,9 +34,11 @@ namespace ssd
         void renderNow();
 
     protected:
+        void animate();
         bool event(QEvent* event) override;
         void keyPressEvent(QKeyEvent* event) override;
         void mouseMoveEvent(QMouseEvent* event) override;
+        void timerEvent(QTimerEvent* event) override;
         void exposeEvent(QExposeEvent* event) override;
 
     private:
@@ -43,7 +47,9 @@ namespace ssd
         std::shared_ptr<Camera> camera;
         std::shared_ptr<Renderer> renderer;
         std::shared_ptr<EventHandler> eventHandler;
+        std::shared_ptr<Scene> scene;
 
+        int timer;
         QOpenGLContext* context;
         QSurfaceFormat surfaceFormat;
     };
