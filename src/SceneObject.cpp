@@ -1,5 +1,7 @@
 #include "SceneObject.h"
 
+#include <iostream>
+
 using namespace ssd;
 
 SceneObject::SceneObject(std::vector<float> inVertices, std::vector<float> inColors, std::vector<int> inIndices)

@@ -6,7 +6,7 @@
 namespace ssd {
 	class Sphere {
 	public:
-		Sphere(int size);
+		Sphere(int size, float posX, float posY, float posZ);
 		void setColor(glm::vec3 color);
 		inline std::vector<float> getVertices() { return GLvertices; };
 		inline std::vector<float> getColors() { return colors; };
@@ -19,7 +19,7 @@ namespace ssd {
 		std::vector<int> GLindices;
 		std::vector<glm::vec3> indices;
 
-		void Sphere::icosahedron();
+		void Sphere::icosahedron(float posX, float posY, float posZ);
 		void Sphere::setUniqueColors();
 		std::vector<float> Sphere::convertToGLData(std::vector<glm::vec3> data);
 	};

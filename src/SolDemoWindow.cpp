@@ -150,6 +150,6 @@ void ssd::SolDemoWindow::exposeEvent(QExposeEvent* event)
 
 void ssd::SolDemoWindow::animate()
 {
-		scene->moveObjects();
-		renderNow();
+	scene->moveObjects();
+	renderNow();
 }

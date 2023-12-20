@@ -3,12 +3,12 @@
 
 using namespace ssd;
 
-Sphere::Sphere(int size) {
-	Sphere::icosahedron();
+Sphere::Sphere(int size, float posX, float posY, float posZ) {
+	Sphere::icosahedron(posX, posY, posZ);
     Sphere::setUniqueColors();
 }
 
-void Sphere::icosahedron() {
+void Sphere::icosahedron(float posX, float posY, float posZ) {
 
     //from https://danielsieger.com/blog/2021/01/03/generating-platonic-solids.html
 	float phi = (1.0f + sqrt(5.0f)) * 0.5f; // golden ratio
@@ -16,18 +16,18 @@ void Sphere::icosahedron() {
 	float b = 1.0f / phi;
 
 	// adding vertices
-    vertices.push_back(glm::vec3(0, b, -a));
-    vertices.push_back(glm::vec3(b, a, 0));
-    vertices.push_back(glm::vec3(-b, a, 0));
-    vertices.push_back(glm::vec3(0, b, a));
-    vertices.push_back(glm::vec3(0, -b, a));
-    vertices.push_back(glm::vec3(-a, 0, b));
-    vertices.push_back(glm::vec3(0, -b, -a));
-    vertices.push_back(glm::vec3(a, 0, -b));
-    vertices.push_back(glm::vec3(a, 0, b));
-    vertices.push_back(glm::vec3(-a, 0, -b));
-    vertices.push_back(glm::vec3(b, -a, 0));
-    vertices.push_back(glm::vec3(-b, -a, 0));
+    vertices.push_back(glm::vec3(posX, posY + b, posZ - a));
+    vertices.push_back(glm::vec3(posX + b, posY + a, posZ));
+    vertices.push_back(glm::vec3(posX - b, posY + a, posZ));
+    vertices.push_back(glm::vec3(posX, posY + b, posZ + a));
+    vertices.push_back(glm::vec3(posX, posY - b, posZ + a));
+    vertices.push_back(glm::vec3(posX - a, posY, posZ + b));
+    vertices.push_back(glm::vec3(posX, posY - b, posZ - a));
+    vertices.push_back(glm::vec3(posX + a, posY, posZ - b));
+    vertices.push_back(glm::vec3(posX + a, posY, posZ + b));
+    vertices.push_back(glm::vec3(posX - a, posY, posZ - b));
+    vertices.push_back(glm::vec3(posX + b, posY - a, posZ));
+    vertices.push_back(glm::vec3(posX - b, posY - a, posZ));
 
     // adding triangles
     indices.push_back(glm::vec3(2, 1, 0));
