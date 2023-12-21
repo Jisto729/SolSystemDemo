@@ -29,10 +29,11 @@ Renderer::Renderer(QOpenGLContext* context, int width, int height, const qreal p
 	shaderProgram = std::make_shared<ge::gl::Program>(vertexShader, fragmentShader);
 
 	//! [buffer_ctor]
-	std::vector<glm::mat4> modelMatrices;
-	glm::mat4 mat = glm::translate(glm::mat4(1.0f), glm::vec3{ 0,0,-5 }) * glm::rotate(glm::mat4(1.0f), glm::radians(45.0f), glm::vec3{ 1.f,1.0f,0.f });
-
-	modelMatrices.push_back(mat);
+	std::vector<glm::mat4> modelMatrices = scene->getModelMatrices();
+	//glm::mat4 mat = glm::translate(glm::mat4(1.0f), glm::vec3{ 0,0,-15 }) * glm::rotate(glm::mat4(1.0f), glm::radians(45.0f), glm::vec3{ 1.f,1.0f,0.f });
+	//glm::mat4 mat = glm::mat4(1.0f);
+	//glm::mat4
+	//modelMatrices.push_back(mat);
 
 	SSBO = std::make_shared<ge::gl::Buffer>(modelMatrices.size() * sizeof(glm::mat4), modelMatrices.data());
 
@@ -57,9 +58,10 @@ void Renderer::render(std::shared_ptr<Scene> scene)
 	gl->glClearColor(.392, .584, 0.929, 1.0);
 	gl->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
+	scene->updateModelMatrices(SSBO);
 	camera->updateMatrix(windowWidth, windowHeight);
-	shaderProgram->setMatrix4fv("camMatrix", glm::value_ptr(camera->getMatrix()));
-
+	shaderProgram->setMatrix4fv("camMatrix", glm::value_ptr(camera->getMatrix()))
+			->bindBuffer("perDrawData_t", SSBO);
 	shaderProgram->use();
 	VAO->bind();
 	gl->glEnable(GL_DEPTH_TEST);

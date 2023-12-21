@@ -32,8 +32,7 @@ ssd::SolDemoWindow::SolDemoWindow(QWindow* parent)
 	surfaceFormat.setProfile(QSurfaceFormat::CoreProfile);
 
 	//Timer
-	//timer = new QTimer(this);
-	timer = startTimer(1000);
+	timer = startTimer(20);
 }
 //! [ctor]
 

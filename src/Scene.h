@@ -12,12 +12,13 @@ namespace ssd
 	public:
 		Scene();
 		void moveObjects();
-		void updateBuffers();
 		inline std::vector<SceneObject> getObjects() { return objects; }
 
 		inline std::shared_ptr<ge::gl::Buffer> getVerticesBuff() { return verticesBuff; };
 		inline std::shared_ptr<ge::gl::Buffer> getColorsBuff() { return colorsBuff; };
 		inline std::shared_ptr<ge::gl::Buffer> getIndicesBuff() { return indicesBuff; };
+		std::vector<glm::mat4> getModelMatrices();
+		void updateModelMatrices(std::shared_ptr<ge::gl::Buffer> SSBO);
 	private:
 		std::vector<SceneObject> objects;
 

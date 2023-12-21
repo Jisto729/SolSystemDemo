@@ -49,23 +49,41 @@ Scene::Scene()
 void Scene::moveObjects()
 {
 	for (SceneObject& obj : objects) {
-		obj.moveObject(0.5f, 0.0f, 0.0f);
+		obj.moveObject(0.05f, 0.0f, 0.0f);
 	}
-	updateBuffers();
+	//updateBuffers();
 }
 
 void Scene::updateBuffers()
 {
 	//TODO change to allow more objects and comunicate with the dll library
-	std::vector<float> vertices;
+//	std::vector<float> vertices;
+//
+//	for (SceneObject obj : objects) {
+//		std::vector<float> objVertices = obj.getVertices();
+//		vertices.insert(vertices.end(), objVertices.begin(), objVertices.end());
+//	}
+//
+//	//TODO add all buffers, find out if this is the best way to do this
+//	GLvoid* buffPtr = verticesBuff->map(GL_READ_WRITE);
+//	memcpy(buffPtr, vertices.data(), verticesBuff->getSize());
+//	verticesBuff->unmap();
+}
 
+std::vector<glm::mat4> Scene::getModelMatrices()
+{
+	std::vector<glm::mat4> matrices;
 	for (SceneObject obj : objects) {
-		std::vector<float> objVertices = obj.getVertices();
-		vertices.insert(vertices.end(), objVertices.begin(), objVertices.end());
+		glm::mat4 matrix = obj.getModelMatrix();
+		matrices.push_back(matrix);
 	}
+	return matrices;
+}
 
-	//TODO add all buffers, find out if this is the best way to do this
-	GLvoid* buffPtr = verticesBuff->map(GL_READ_WRITE);
-	memcpy(buffPtr, vertices.data(), verticesBuff->getSize());
-	verticesBuff->unmap();
+void Scene::updateModelMatrices(std::shared_ptr<ge::gl::Buffer> SSBO)
+{
+	std::vector<glm::mat4> matrices = getModelMatrices();
+	GLvoid* buffPtr = SSBO->map(GL_READ_WRITE);
+	memcpy(buffPtr, matrices.data(), SSBO->getSize());
+	SSBO->unmap();
 }
