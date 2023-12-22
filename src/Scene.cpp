@@ -47,7 +47,7 @@ Scene::Scene()
 			index += indexOffset;
 		}
 
-		objects.push_back(SceneObject(objVertices, objColors, objIndices));
+		objects.push_back(SceneObject(objVertices, objColors, objIndices, sphere.getCenter()));
 		vertices.insert(vertices.end(), objVertices.begin(), objVertices.end());
 		colors.insert(colors.end(), objColors.begin(), objColors.end());
 		indices.insert(indices.end(), objIndices.begin(), objIndices.end());
@@ -66,18 +66,7 @@ void Scene::moveObjects()
 	int i = 0;
 	for (SceneObject& obj : objects)
 	{
-		if (i == 0)
-		{
-			obj.moveObject(0.05f, 0.05f, 0.0f);
-		} 
-		else if(i == 1) 
-		{
-			obj.moveObject(0.1f, 0.0f, 0.0f);
-		}
-		else
-		{
-			obj.moveObject(0.1f, 0.02f, 0.0f);
-		}
+		obj.revolveAroundPoint(obj.getCenter(), glm::radians(1.0f));
 		i++;
 	}
 }

@@ -10,6 +10,7 @@ Sphere::Sphere(int size, float posX, float posY, float posZ) {
 
 void Sphere::icosahedron(float posX, float posY, float posZ) {
 
+    center = glm::vec3(posX, posY, posZ);
     //from https://danielsieger.com/blog/2021/01/03/generating-platonic-solids.html
 	float phi = (1.0f + sqrt(5.0f)) * 0.5f; // golden ratio
 	float a = 1.0f;
