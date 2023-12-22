@@ -30,11 +30,6 @@ Renderer::Renderer(QOpenGLContext* context, int width, int height, const qreal p
 
 	//! [buffer_ctor]
 	std::vector<glm::mat4> modelMatrices = scene->getModelMatrices();
-	//glm::mat4 mat = glm::translate(glm::mat4(1.0f), glm::vec3{ 0,0,-15 }) * glm::rotate(glm::mat4(1.0f), glm::radians(45.0f), glm::vec3{ 1.f,1.0f,0.f });
-	//glm::mat4 mat = glm::mat4(1.0f);
-	//glm::mat4
-	//modelMatrices.push_back(mat);
-
 	SSBO = std::make_shared<ge::gl::Buffer>(modelMatrices.size() * sizeof(glm::mat4), modelMatrices.data());
 
 	// Uniforms
@@ -49,6 +44,8 @@ Renderer::Renderer(QOpenGLContext* context, int width, int height, const qreal p
 	VAO->addElementBuffer(scene->getIndicesBuff());
 	VAO->addAttrib(scene->getVerticesBuff(), 0, 3, GL_FLOAT);
 	VAO->addAttrib(scene->getColorsBuff(), 1, 3, GL_FLOAT);
+	VAO->addAttrib(scene->getModelIDsBuff(), 2, 1, GL_FLOAT);
+
 	//![VAO]
 }
 

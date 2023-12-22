@@ -2,6 +2,8 @@
 
 in layout(location = 0) vec3 position;
 in layout(location = 1) vec3 color;
+//should probably be unsigned int, but can't seem to make that work
+in layout(location = 2) float modelId;
 
 layout(std430, binding=0) buffer perDrawData_t
 {
@@ -11,13 +13,13 @@ layout(std430, binding=0) buffer perDrawData_t
 out vs_output_interface
 {
     vec3 color;
-}attribs;
+} attribs;
 
 uniform mat4 camMatrix;
-uniform int modelId;
 
 void main()
 {
     attribs.color = color;
-    gl_Position = camMatrix * model[modelId] * vec4(position,1.0f);
+    int modelIndex = int(modelId);
+    gl_Position = camMatrix * model[modelIndex] * vec4(position,1.0f);
 }

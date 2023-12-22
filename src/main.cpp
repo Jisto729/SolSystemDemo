@@ -9,7 +9,7 @@ int main(int argc, char** argv)
 	QGuiApplication app(argc, argv);
 
 	ssd::SolDemoWindow window;
-	window.resize(640, 480);
+	window.resize(800, 800);
 	window.show();
 
 	return app.exec();

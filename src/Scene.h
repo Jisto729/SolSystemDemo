@@ -17,6 +17,7 @@ namespace ssd
 		inline std::shared_ptr<ge::gl::Buffer> getVerticesBuff() { return verticesBuff; };
 		inline std::shared_ptr<ge::gl::Buffer> getColorsBuff() { return colorsBuff; };
 		inline std::shared_ptr<ge::gl::Buffer> getIndicesBuff() { return indicesBuff; };
+		inline std::shared_ptr<ge::gl::Buffer> getModelIDsBuff() { return modelIDsBuff; };
 		std::vector<glm::mat4> getModelMatrices();
 		void updateModelMatrices(std::shared_ptr<ge::gl::Buffer> SSBO);
 	private:
@@ -25,5 +26,6 @@ namespace ssd
 		std::shared_ptr<ge::gl::Buffer> verticesBuff;
 		std::shared_ptr<ge::gl::Buffer> colorsBuff;
 		std::shared_ptr<ge::gl::Buffer> indicesBuff;
+		std::shared_ptr<ge::gl::Buffer> modelIDsBuff;
 	};
 }

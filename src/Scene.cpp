@@ -1,5 +1,7 @@
 #include "Scene.h"
 #include <algorithm>
+#include <glm/gtx/string_cast.hpp>
+
 
 //TODO use classes from dll
 #include "Sphere.h"
@@ -8,26 +10,40 @@ using namespace ssd;
 
 Scene::Scene()
 {
-	//TODO change to allow more objects and comunicate with the dll library
+	//TODO comunicate with the dll library
 	std::vector<Sphere> spheres;
 	spheres.push_back(Sphere(1, 0.0f, 0.0f, 0.0f));
-	spheres.push_back(Sphere(1, 3.0f, 3.0f, 3.0f));
+	spheres.push_back(Sphere(1, 2.0f, 2.0f, 2.0f));
+	spheres.push_back(Sphere(1, 5.0f, 3.0f, 3.0f));
 	spheres.push_back(Sphere(1, 1.0f, 1.0f, 1.0f));
+	spheres.push_back(Sphere(1, -1.0f, -1.0f, 1.0f));
+	spheres.push_back(Sphere(1, -1.0f, 1.0f, 1.0f));
+
 
 	std::vector<float> vertices;
 	std::vector<float> colors;
 	std::vector<int> indices;
+	//should probably be unsigned int, but can't seem to make that work
+	std::vector<float> modelIDs;
 
 	//change to object or something like that
-	for (Sphere sphere : spheres) {
+	int modelID = 0;
+	for (Sphere sphere : spheres)
+	{
 		std::vector<float> objVertices = sphere.getVertices();
 		std::vector<float> objColors = sphere.getColors();
 		std::vector<int> objIndices = sphere.getIndices();
 
+		//for each vertex a modelID is added also
+		for (int i = 0; i < objVertices.size(); i += 3)
+		{
+			modelIDs.push_back(modelID);
+		}
+
 		//recalculating indices if the scene is composed of more objects
 		int indexOffset = vertices.size() / 3;
-		std::cout << indexOffset;
-		for (int& index : objIndices) {
+		for (int& index : objIndices)
+		{
 			index += indexOffset;
 		}
 
@@ -35,45 +51,42 @@ Scene::Scene()
 		vertices.insert(vertices.end(), objVertices.begin(), objVertices.end());
 		colors.insert(colors.end(), objColors.begin(), objColors.end());
 		indices.insert(indices.end(), objIndices.begin(), objIndices.end());
-		for (float pos : objVertices) {
-
-		}
+		modelID++;
 	}
 
 	verticesBuff = std::make_shared<ge::gl::Buffer>(vertices.size() * sizeof(float), vertices.data());
 	colorsBuff = std::make_shared<ge::gl::Buffer>(colors.size() * sizeof(float), colors.data());
 	indicesBuff = std::make_shared<ge::gl::Buffer>(indices.size() * sizeof(int), indices.data());
+	modelIDsBuff = std::make_shared<ge::gl::Buffer>(modelIDs.size() * sizeof(float), modelIDs.data());
 }
 
 //will be changed later, just proof of concept
 void Scene::moveObjects()
 {
-	for (SceneObject& obj : objects) {
-		obj.moveObject(0.05f, 0.0f, 0.0f);
+	int i = 0;
+	for (SceneObject& obj : objects)
+	{
+		if (i == 0)
+		{
+			obj.moveObject(0.05f, 0.05f, 0.0f);
+		} 
+		else if(i == 1) 
+		{
+			obj.moveObject(0.1f, 0.0f, 0.0f);
+		}
+		else
+		{
+			obj.moveObject(0.1f, 0.02f, 0.0f);
+		}
+		i++;
 	}
-	//updateBuffers();
-}
-
-void Scene::updateBuffers()
-{
-	//TODO change to allow more objects and comunicate with the dll library
-//	std::vector<float> vertices;
-//
-//	for (SceneObject obj : objects) {
-//		std::vector<float> objVertices = obj.getVertices();
-//		vertices.insert(vertices.end(), objVertices.begin(), objVertices.end());
-//	}
-//
-//	//TODO add all buffers, find out if this is the best way to do this
-//	GLvoid* buffPtr = verticesBuff->map(GL_READ_WRITE);
-//	memcpy(buffPtr, vertices.data(), verticesBuff->getSize());
-//	verticesBuff->unmap();
 }
 
 std::vector<glm::mat4> Scene::getModelMatrices()
 {
 	std::vector<glm::mat4> matrices;
-	for (SceneObject obj : objects) {
+	for (SceneObject obj : objects)
+	{
 		glm::mat4 matrix = obj.getModelMatrix();
 		matrices.push_back(matrix);
 	}
