@@ -15,6 +15,8 @@ namespace ssd {
 
 		void moveObject(float dx, float dy, float dz);
 		void revolveAroundPoint(glm::vec3 rotCenter, float angle);
+		void movePlanet(glm::vec3 rotCenter, float rotAngle, float orbitAngle);
+		void moveToPosition(glm::vec3 position);
 	private:
 		std::vector<float> vertices;
 		std::vector<float> colors;
