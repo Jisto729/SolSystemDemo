@@ -16,12 +16,9 @@ SET(CMAKE_RELEASE_POSTFIX "" CACHE STRING "add a postfix, usually empty on windo
 SET(CMAKE_RELWITHDEBINFO_POSTFIX "rd" CACHE STRING "add a postfix, usually empty on windows")
 SET(CMAKE_MINSIZEREL_POSTFIX "s" CACHE STRING "add a postfix, usually empty on windows")
 
-
-SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
-
-
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package(GPUEngine COMPONENTS geGL geUtil geCore)
+find_package(SolSystemLib REQUIRED)
 
 set(DEFAULT_RESOURCES_PATH "${CMAKE_CURRENT_LIST_DIR}/resources")
 
@@ -47,22 +44,16 @@ set(SOURCE_FILES
    src/SceneObject.h src/SceneObject.cpp
    src/Renderer.h src/Renderer.cpp
    src/Camera.h src/Camera.cpp
-   #TODO remove
-   src/Sphere.h src/Sphere.cpp
 )
 
-
 add_executable(${APP_NAME} ${SOURCE_FILES})
-#preferable linking
-target_link_libraries(${APP_NAME} Qt5::Widgets geGL geUtil geCore)
 
+target_link_libraries(${APP_NAME} PRIVATE Qt5::Widgets geGL geUtil geCore SolSystemLib)
 
 target_include_directories(${APP_NAME} PUBLIC "src/")
 add_compile_definitions(FRAGMENT_SHADER=\"${fragmentShader}\" VERTEX_SHADER=\"${vertexShader}\")
 
 set_target_properties(${APP_NAME} PROPERTIES COMPILE_DEFINITIONS "APP_RESOURCES=\"${${APP_NAME}_RESOURCES}\"")
-# set_property(TARGET ${APP_NAME} PROPERTY FOLDER "${examples_folder_name}")
-
 
 # setting up the MSVC helper var
 get_target_property(Qt5dllPath Qt5::Widgets IMPORTED_LOCATION_RELEASE)

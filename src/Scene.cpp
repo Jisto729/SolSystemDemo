@@ -11,13 +11,13 @@ using namespace ssd;
 Scene::Scene()
 {
 	//TODO comunicate with the dll library
-	std::vector<Sphere> spheres;
-	spheres.push_back(Sphere(1, 0.0f, 0.0f, 0.0f));
-	spheres.push_back(Sphere(1, 2.0f, 2.0f, 2.0f));
-	spheres.push_back(Sphere(1, 5.0f, 3.0f, 3.0f));
-	spheres.push_back(Sphere(1, 1.0f, 1.0f, 1.0f));
-	spheres.push_back(Sphere(1, -1.0f, -1.0f, 1.0f));
-	spheres.push_back(Sphere(1, -1.0f, 1.0f, 1.0f));
+	std::vector<ssl::Sphere> spheres;
+	spheres.push_back(ssl::Sphere(1, 0.0f, 0.0f, 0.0f));
+	spheres.push_back(ssl::Sphere(1, 2.0f, 2.0f, 2.0f));
+	spheres.push_back(ssl:: Sphere(1, 5.0f, 3.0f, 3.0f));
+	spheres.push_back(ssl::Sphere(1, 1.0f, 1.0f, 1.0f));
+	spheres.push_back(ssl::Sphere(1, -1.0f, -1.0f, 1.0f));
+	spheres.push_back(ssl::Sphere(1, -1.0f, 1.0f, 1.0f));
 
 
 	std::vector<float> vertices;
@@ -28,7 +28,7 @@ Scene::Scene()
 
 	//change to object or something like that
 	int modelID = 0;
-	for (Sphere sphere : spheres)
+	for (ssl::Sphere sphere : spheres)
 	{
 		std::vector<float> objVertices = sphere.getVertices();
 		std::vector<float> objColors = sphere.getColors();
