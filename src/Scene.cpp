@@ -11,7 +11,7 @@ Scene::Scene()
 	std::vector<ssl::Sphere> spheres;
 	spheres.push_back(ssl::Sphere(1, 0.0f, 0.0f, 0.0f)); //sun
 	spheres.push_back(ssl::Sphere(1, 5.0f, 0.0f, 5.0f)); //planet
-	//spheres.push_back(ssl:: Sphere(1, 5.0f, 0.0f, 7.5f)); //moon
+	spheres.push_back(ssl:: Sphere(1, 5.0f, 0.0f, 7.5f)); //moon
 
 	std::vector<float> vertices;
 	std::vector<float> colors;
@@ -60,6 +60,7 @@ void Scene::moveObjects()
 	glm::vec3 systemCenter = glm::vec3(0.0f, 0.0f, 0.0f);
 	for (SceneObject& obj : objects)
 	{
+		float planetOrbit = -5.0f;
 		//simulating sun, planet and a moon, will be later done according to some properties
 		if (i == 0)
 		//sun
@@ -68,11 +69,11 @@ void Scene::moveObjects()
 		} else if (i == 1)
 		//planet
 		{
-			obj.movePlanet(systemCenter, glm::radians(-9.0f), glm::radians(-5.0f));
+			obj.movePlanet(glm::radians(9.0f), glm::radians(planetOrbit));
 		} else if (i == 2)
 		//moon
 		{
-			//TODO
+			obj.moveMoon(objects[1].getCenter(), glm::radians(3.0f), glm::radians(-10.0f), glm::radians(planetOrbit));
 		}
 		i++;
 	}

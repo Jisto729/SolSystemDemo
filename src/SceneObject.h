@@ -15,7 +15,8 @@ namespace ssd {
 
 		void moveObject(float dx, float dy, float dz);
 		void revolveAroundPoint(glm::vec3 rotCenter, float angle);
-		void movePlanet(glm::vec3 rotCenter, float rotAngle, float orbitAngle);
+		void movePlanet(float rotAngle, float orbitAngle);
+		void moveMoon(glm::vec3 rotCenter, float rotAngle, float orbitAngle, float planetOrbitAngle);
 		void moveToPosition(glm::vec3 position);
 	private:
 		std::vector<float> vertices;
