@@ -18,13 +18,10 @@ Camera::Camera(glm::vec3 defaultPosition, float defaultFov, float defaultNearPla
 
 void Camera::updateMatrix(int windowWidth, int windowHeight)
 {
-	glm::mat4 view = glm::mat4(1.0f);
-	glm::mat4 projection = glm::mat4(1.0f);
-	
-	view = glm::lookAt(position, position + orientation, Up);
-	projection = glm::perspective(glm::radians(fov), (float)(windowWidth / windowHeight), nearPlane, farPlane);
+	viewMatrix = glm::lookAt(position, position + orientation, Up);
+	projectionMatrix = glm::perspective(glm::radians(fov), (float)(windowWidth / windowHeight), nearPlane, farPlane);
 
-	cameraMatrix = projection * view;
+	cameraMatrix = projectionMatrix * viewMatrix;
 }
 
 
@@ -70,6 +67,6 @@ void Camera::move(float dx, float dy) {
 	moveXY(dx, dy);
 }
 
-glm::mat4 Camera::getMatrix() const {
-	return glm::mat4(1.0f);
-}
+//glm::mat4 Camera::getMatrix() const {
+//	return glm::mat4(1.0f);
+//}

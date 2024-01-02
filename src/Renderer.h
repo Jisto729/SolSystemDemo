@@ -35,8 +35,11 @@ namespace ssd
 
 		std::shared_ptr<ge::gl::Context> gl;
 		std::shared_ptr<ge::gl::Program> shaderProgram;
+		std::shared_ptr<ge::gl::Program> lightShaderProgram;
 		std::shared_ptr<ge::gl::VertexArray> VAO;
+		std::shared_ptr<ge::gl::VertexArray> lightVAO;
 		std::shared_ptr<ge::gl::Buffer> SSBO;
+		std::shared_ptr<ge::gl::Buffer> lightSSBO;
 
 		QOpenGLContext* context;
 

@@ -22,13 +22,17 @@ namespace ssd {
 		float speed = 0.05f;
 
 		glm::mat4 cameraMatrix = glm::mat4(1.0f);
+		glm::mat4 projectionMatrix = glm::mat4(1.0f);
+		glm::mat4 viewMatrix = glm::mat4(1.0f);
 
 		Camera(glm::vec3 defaultPosition, float fov, float nearPlane, float farPlane);
 
 		void Camera::updateMatrix(int windowWidth, int windowHeight);
 		//TODO rename
-		inline glm::mat4 Camera::getMatrix() { return cameraMatrix; };
+		inline glm::mat4 Camera::getProjectionMatrix() { return projectionMatrix; };
+		inline glm::mat4 Camera::getViewMatrix() { return viewMatrix; };
 
+		inline glm::vec3 getPosition() { return position; }
 		void updatePosition(glm::vec3 newPosition);
 		void updateOrientation(glm::vec3 newOrientation);
 
@@ -38,7 +42,7 @@ namespace ssd {
 		float sensitivityY = 100;
 
 		//Matrix Interface
-		glm::mat4 getMatrix() const override;
+		glm::mat4 Camera::getMatrix() const override { return cameraMatrix; };
 
 		//BasicManipulatorInterface
 		void moveZ(float dz) override;

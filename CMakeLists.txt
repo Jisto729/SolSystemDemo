@@ -30,6 +30,14 @@ find_file(fragmentShader frag.glsl
         HINTS ${DEFAULT_RESOURCES_PATH}/shaders
 )
 
+find_file(lightVertexShader lightVert.glsl
+        HINTS ${DEFAULT_RESOURCES_PATH}/shaders
+)
+
+find_file(lightFragmentShader lightFrag.glsl
+        HINTS ${DEFAULT_RESOURCES_PATH}/shaders
+)
+
 set(${APP_NAME}_RESOURCES "${DEFAULT_RESOURCES_PATH}" CACHE PATH "Relative or absolute path to Application resources.")
 
 set(HEADER_PATH src)
@@ -51,7 +59,12 @@ add_executable(${APP_NAME} ${SOURCE_FILES})
 target_link_libraries(${APP_NAME} PRIVATE Qt5::Widgets geGL geUtil geCore SolSystemLib)
 
 target_include_directories(${APP_NAME} PUBLIC "src/")
-add_compile_definitions(FRAGMENT_SHADER=\"${fragmentShader}\" VERTEX_SHADER=\"${vertexShader}\")
+add_compile_definitions(
+    FRAGMENT_SHADER=\"${fragmentShader}\" 
+    VERTEX_SHADER=\"${vertexShader}\"
+    LIGHT_FRAGMENT_SHADER=\"${lightFragmentShader}\"
+    LIGHT_VERTEX_SHADER=\"${lightVertexShader}\"
+)
 
 set_target_properties(${APP_NAME} PROPERTIES COMPILE_DEFINITIONS "APP_RESOURCES=\"${${APP_NAME}_RESOURCES}\"")
 

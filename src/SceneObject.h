@@ -4,14 +4,20 @@
 #include <glm/glm.hpp>
 
 namespace ssd {
+	typedef enum
+	{
+		normalObject,
+		lightObject
+	} ObjectType;
 	class SceneObject {
 	public:
-		SceneObject(std::vector<float> inVertices, std::vector<float> inColors, std::vector<int> inIndices, glm::vec3 inCenter);
+		SceneObject(std::vector<float> inVertices, std::vector<float> inColors, std::vector<int> inIndices, glm::vec3 inCenter, ObjectType inType);
 		inline std::vector<float> getVertices() { return vertices; };
 		inline std::vector<float> getColors() { return colors; };
 		inline std::vector<int> getIndices() { return indices; };
 		inline glm::vec3 getCenter() { return center; };
 		inline glm::mat4 getModelMatrix() { return modelMatrix; };
+		inline ObjectType getObjectType() { return type; };
 
 		void moveObject(float dx, float dy, float dz);
 		void revolveAroundPoint(glm::vec3 rotCenter, float angle);
@@ -24,6 +30,7 @@ namespace ssd {
 		std::vector<int> indices;
 		glm::vec3 center;
 		glm::mat4 modelMatrix = glm::mat4(1.0f);
+		ObjectType type;
 
 		void updateBuffers();
 	};

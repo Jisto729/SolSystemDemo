@@ -6,12 +6,13 @@
 
 using namespace ssd;
 
-SceneObject::SceneObject(std::vector<float> inVertices, std::vector<float> inColors, std::vector<int> inIndices, glm::vec3 inCenter)
+SceneObject::SceneObject(std::vector<float> inVertices, std::vector<float> inColors, std::vector<int> inIndices, glm::vec3 inCenter, ObjectType inType)
 {
 	vertices = inVertices;
 	colors = inColors;
 	indices = inIndices;
 	center = inCenter;
+	type = inType;
 }
 
 void SceneObject::moveObject(float dx, float dy, float dz)
@@ -24,10 +25,8 @@ void SceneObject::revolveAroundPoint(glm::vec3 rotCenter, float angle)
 	glm::vec3 origin = glm::vec3(0.0, 0.0, 0.0);
 	glm::vec3 translateVec = rotCenter - origin;
 	modelMatrix = glm::translate(glm::rotate(glm::translate(modelMatrix, translateVec), angle, glm::vec3(0.0f, 1.0f, 0.0f)), -translateVec);
-	//TODO change center location based on the rotation
 	glm::mat4 rotateCenter = glm::translate(glm::rotate(glm::translate(glm::mat4(1.0f), translateVec), angle, glm::vec3(0.0f, 1.0f, 0.0f)), -translateVec);
 	center = glm::vec3(rotateCenter * glm::vec4(center, 1.0f));
-	//std::cout << glm::to_string(center) << std::endl;
 }
 
 //moves an object around the origin, while also rotating itself

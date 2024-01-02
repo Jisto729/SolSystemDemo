@@ -67,7 +67,7 @@ void ssd::SolDemoWindow::initialize()
 	/*GPUEngine Init*/
 	ge::gl::init();
 
-	camera = std::make_shared<Camera>(glm::vec3(0.0f, 25.0f, 0.0f), 50.0f, 0.1f, 100.0f);
+	camera = std::make_shared<Camera>(glm::vec3(0.0f, 2.0f, 10.0f), 50.0f, 0.1f, 100.0f);
 	camera->updateMatrix(width(), height());
 	scene = std::make_shared<Scene>();
 	renderer = std::make_shared<Renderer>(context, width(), height(), devicePixelRatio(), camera, scene);
