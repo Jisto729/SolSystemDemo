@@ -35,24 +35,24 @@ vec3 CalculateLight()
         vec3 currentLightPosition;
         //dynamic indexing is not available
         if(i == 0) {
-            currentColor = vec3(lightColors[0][0], lightColors[0][1], lightColors[0][2]);
-            currentLightPosition = vec3(lightPositions[0][0], lightPositions[0][1], lightPositions[0][2]);
+            currentColor = lightColors[0];
+            currentLightPosition = lightPositions[0];
         }
         if(i == 1) {
-            currentColor = vec3(lightColors[1][0], lightColors[1][1], lightColors[1][2]);
-            currentLightPosition = vec3(lightPositions[1][0], lightPositions[1][1], lightPositions[1][2]);
+            currentColor = lightColors[1];
+            currentLightPosition = lightPositions[1];
         }
         if(i == 2) {
-            currentColor = vec3(lightColors[2][0], lightColors[2][1], lightColors[2][2]);
-            currentLightPosition = vec3(lightPositions[2][0], lightPositions[2][1], lightPositions[2][2]);
+            currentColor = lightColors[2];
+            currentLightPosition = lightPositions[2];
         }
         if(i == 3) {
-            currentColor = vec3(lightColors[3][0], lightColors[3][1], lightColors[3][2]);
-            currentLightPosition = vec3(lightPositions[3][0], lightPositions[3][1], lightPositions[3][2]);
+            currentColor = lightColors[3];
+            currentLightPosition = lightPositions[3];
         }
         if(i == 4) {
-            currentColor = vec3(lightColors[4][0], lightColors[4][1], lightColors[4][2]);
-            currentLightPosition = vec3(lightPositions[4][0], lightPositions[4][1], lightPositions[4][2]);
+            currentColor = lightColors[4];
+            currentLightPosition = lightPositions[4];
         }
         //from https://learnopengl.com/Lighting/Multiple-lights
         vec3 viewDir = normalize(camPosition - attribs.fragPos);
