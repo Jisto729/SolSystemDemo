@@ -1,6 +1,6 @@
 #include "Camera.h"
+//rotate function from https://github.com/VictorGordan/opengl-tutorials/tree/main/YoutubeOpenGL%208%20-%20Camera
 
-//TODO remove
 #include <iostream>
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtx/rotate_vector.hpp>
@@ -33,40 +33,58 @@ void Camera::updateOrientation(glm::vec3 newOrientation) {
 }
 
 
-void Camera::moveZ(float dz) {
-	position += dz * Up;
+void Camera::moveX(float dx)
+{
+	movement = glm::vec3(dx, movement.y, movement.z);
 }
 
-void Camera::moveXY(float dx, float dy) {
-	position += dx * -glm::normalize(glm::cross(orientation, Up)) + dy * orientation;
+void Camera::moveY(float dy)
+{
+	movement = glm::vec3(movement.x, dy, movement.z);
+}
+
+void Camera::moveZ(float dz)
+{
+	movement = glm::vec3(movement.x, movement.y, dz);
+}
+
+
+void Camera::stopX()
+{
+	movement = glm::vec3(0, movement.y, movement.z);
+}
+
+void Camera::stopY()
+{
+	movement = glm::vec3(movement.x, 0, movement.z);
+}
+
+void Camera::stopZ()
+{
+	movement = glm::vec3(movement.x, movement.y, 0);
 }
 
 void Camera::rotate(float dx, float dy) {
-	float rotX = sensitivityX * dx;
-	float rotY = sensitivityY * dy;
+	float rotateX = sensitivityX * dx;
+	float rotateY = sensitivityY * dy;
 
 	// vertical rotation
-	glm::vec3 newOrientation = glm::rotate(orientation, glm::radians(-rotX), glm::normalize(glm::cross(orientation, Up)));
+	glm::vec3 rotAxis = glm::normalize(glm::cross(orientation, Up));
+	glm::vec3 newOrientation = glm::rotate(orientation, glm::radians(-rotateX), rotAxis);
 
 	// rotates vertically only if able
-	//TODO fix rotation when looing straight down
-	if (abs(glm::angle(newOrientation, Up) - glm::radians(90.0f)) <= glm::radians(89.0f))
+	if (abs(glm::angle(newOrientation, Up) - glm::radians(90.0f)) <= glm::radians(80.0f))
 	{
 		orientation = newOrientation;
 	}
 
 	// horizontal rotation
-	orientation = glm::rotate(orientation, glm::radians(-rotY), Up);
+	orientation = glm::rotate(orientation, glm::radians(-rotateY), Up);
 }
 
-void Camera::zoom(float dz) {
-	moveXY(dz, 0);
+void Camera::move() {
+	glm::vec3 dx = movement.x * glm::normalize(glm::cross(orientation, Up));
+	glm::vec3 dy = movement.y * Up;
+	glm::vec3 dz = movement.z * glm::normalize(glm::vec3(orientation.x, 0.0f, orientation.z));
+	position += dx + dy + dz;
 }
-
-void Camera::move(float dx, float dy) {
-	moveXY(dx, dy);
-}
-
-//glm::mat4 Camera::getMatrix() const {
-//	return glm::mat4(1.0f);
-//}

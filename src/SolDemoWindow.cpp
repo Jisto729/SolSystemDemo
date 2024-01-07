@@ -101,10 +101,12 @@ void ssd::SolDemoWindow::renderNow()
 //events
 void ssd::SolDemoWindow::keyPressEvent(QKeyEvent* event)
 {
-	if (eventHandler->event(event) == true)
-	{
-		renderNow();
-	}
+	eventHandler->event(event);
+}
+
+void ssd::SolDemoWindow::keyReleaseEvent(QKeyEvent* event)
+{
+	eventHandler->event(event);
 }
 
 void ssd::SolDemoWindow::mouseMoveEvent(QMouseEvent* event)
@@ -114,28 +116,14 @@ void ssd::SolDemoWindow::mouseMoveEvent(QMouseEvent* event)
 		QCursor cursor = QCursor(Qt::BlankCursor);
 		cursor.setPos(geometry().center());
 		setCursor(cursor);
-		renderNow();
 	}
 }
 
 void ssd::SolDemoWindow::timerEvent(QTimerEvent* event)
 {
+	camera->move();
 	animate();
 }
-
-bool ssd::SolDemoWindow::event(QEvent* event)
-{
-
-	//class eventhandler, function will be called, if true, rerenders, if not, nothing
-	if (eventHandler->event(event) == true)
-	{
-		renderNow();
-	} else
-	{
-		return QWindow::event(event);
-	}
-}
-//! [eventFilter]
 
 //! [expose]
 void ssd::SolDemoWindow::exposeEvent(QExposeEvent* event)

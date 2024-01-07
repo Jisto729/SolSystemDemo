@@ -94,7 +94,6 @@ void Renderer::render(std::shared_ptr<Scene> scene)
 	scene->updateModelMatrices(lightSSBO, lightObject);
 	camera->updateMatrix(windowWidth, windowHeight);
 
-
 	shaderProgram
 		->setMatrix4fv("projectionMatrix", glm::value_ptr(camera->getProjectionMatrix()))
 		->setMatrix4fv("viewMatrix", glm::value_ptr(camera->getViewMatrix()))

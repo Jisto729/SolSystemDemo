@@ -35,8 +35,9 @@ namespace ssd
 
     protected:
         void animate();
-        bool event(QEvent* event) override;
+        //bool event(QEvent* event) override;
         void keyPressEvent(QKeyEvent* event) override;
+        void keyReleaseEvent(QKeyEvent* event) override;
         void mouseMoveEvent(QMouseEvent* event) override;
         void timerEvent(QTimerEvent* event) override;
         void exposeEvent(QExposeEvent* event) override;

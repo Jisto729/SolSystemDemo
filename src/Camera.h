@@ -6,7 +6,7 @@
 
 
 namespace ssd {
-	class Camera : public ge::util::BasicManipulatorInterface
+	class Camera
 	{
 	public:
 
@@ -14,6 +14,7 @@ namespace ssd {
 		glm::vec3 position;
 		glm::vec3 orientation = glm::vec3(0.0f, 0.0f, -1.0f);
 		glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
+		glm::vec3 movement = glm::vec3(0.0f, 0.0f, 0.0f);
 
 		float fov;
 		float nearPlane;
@@ -41,26 +42,25 @@ namespace ssd {
 		float sensitivityX = 100;
 		float sensitivityY = 100;
 
-		//Matrix Interface
-		glm::mat4 Camera::getMatrix() const override { return cameraMatrix; };
+		glm::mat4 Camera::getMatrix() const { return cameraMatrix; };
 
-		//BasicManipulatorInterface
-		void moveZ(float dz) override;
-		void moveXY(float dx, float dy) override;
-		void rotate(float dx, float dy) override;
+		void rotate(float dx, float dy);
 
-		void zoom(float dz);
-		void move(float dx, float dy);
+		void moveX(float dx);
+		void moveY(float dy);
+		void moveZ(float dz);
 
-		glm::vec3 getLocalUp() const override { return Up; }
-		void setLocalUp(const glm::vec3& val) override
+		void stopX();
+		void stopY();
+		void stopZ();
+
+		void move();
+
+		glm::vec3 getLocalUp() const { return Up; }
+		void setLocalUp(const glm::vec3& val)
 		{
 			Up = glm::normalize(val);
 		}
-
-		//glm::vec3 getLocatUp() const override { return glm::vec3(1.0f); }
-
-		//void setLocatUp(const glm::vec3& value) {}
 	};
 }
 

@@ -15,12 +15,16 @@ EventHandler::EventHandler(std::shared_ptr<Camera> camera_ptr)
 bool EventHandler::event(QEvent* event) {
 	switch (event->type())
 	{
-	case QEvent::UpdateRequest:
-		return true;
 	case QEvent::KeyPress:
 	{
 		QKeyEvent* keyEvent = (static_cast<QKeyEvent*>(event));
-		this->handleKeyboard(keyEvent->key());
+		this->handleKeyboard(keyEvent->key(), true);
+		return true;
+	}
+	case QEvent::KeyRelease:
+	{
+		QKeyEvent* keyEvent = (static_cast<QKeyEvent*>(event));
+		this->handleKeyboard(keyEvent->key(), false);
 		return true;
 	}
 	default:
@@ -42,31 +46,31 @@ bool EventHandler::event(QEvent* event, int windowWidth, int windowHeight) {
     }
 }
 
-void EventHandler::handleKeyboard(int key) {
+void EventHandler::handleKeyboard(int key, bool isPressed) {
 	float speed = camera->getSpeed();
 	if (key == 'W')
 	{
-		camera->moveXY(0, speed);
+		isPressed ? camera->moveZ(speed) : camera->stopZ();
 	}
 	if (key == 'A')
 	{
-		camera->moveXY(speed, 0);
+		isPressed ? camera->moveX(-speed) : camera->stopX();
 	}
 	if (key == 'S')
 	{
-		camera->moveXY(0, -speed);
+		isPressed ? camera->moveZ(-speed) : camera->stopZ();
 	}
 	if (key == 'D')
 	{
-		camera->moveXY(-speed, 0);
+		isPressed ? camera->moveX(speed) : camera->stopX();
 	}
 	if (key == ' ')
 	{
-		camera->moveZ(speed);
+		isPressed ? camera->moveY(speed) : camera->stopY();
 	}
 	if (key == 'F')
 	{
-		camera->moveZ(-speed);
+		isPressed ? camera->moveY(-speed) : camera->stopY();
 	}
 	if (key == 0x01000000)
 	{
