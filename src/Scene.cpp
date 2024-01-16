@@ -3,6 +3,7 @@
 #include <glm/gtx/string_cast.hpp>
 
 #include "Sphere.h"
+#include "CubeSphere.h"
 
 using namespace ssd;
 
@@ -15,18 +16,14 @@ Scene::Scene()
 	//should probably be unsigned int, but can't seem to make that work
 	std::vector<float> modelIDs;
 
-	std::vector<ssl::Sphere> lights;
-	ssl::Sphere sun = ssl::Sphere(1, 0.0f, 0.0f, 0.0f);
-	sun.setColor(glm::vec3(1.0, 1.0, 1.0));
-	lights.push_back(sun); //sun
-
-	ssl::Sphere sun2 = ssl::Sphere(1, 15.0f, 0.0f, 0.0f);
-	sun2.setColor(glm::vec3(1.0, 1.0, 0.0));
-	lights.push_back(sun2); //sun2
+	std::vector<ssl::CubeSphere> cubeLights;
+	ssl::CubeSphere cubeSun = ssl::CubeSphere(1.0, 4);
+	cubeSun.setColor(glm::vec3(1.0, 0.5, 1.0));
+	cubeLights.push_back(cubeSun); //sun
 
 	//TODO change to some function, so that it is not here twice
 	int modelID = 0;
-	for (ssl::Sphere light : lights)
+	for (ssl::CubeSphere light : cubeLights)
 	{
 		std::vector<float> objVertices = light.getVertices();
 		std::vector<float> objColors = light.getColors();
@@ -122,17 +119,13 @@ void Scene::moveObjects()
 		{
 			obj.revolveAroundPoint(systemCenter, glm::radians(1.0f));
 		} else if (i == 1)
-		//moving light
-		{
-			obj.movePlanet(glm::radians(1.0f), glm::radians(5.0));
-		} else if (i == 2)
 		//planet
 		{
 			obj.movePlanet(glm::radians(1.0f), glm::radians(planetOrbit));
-		} else if (i == 3)
+		} else if (i == 2)
 		//moon
 		{
-			obj.moveMoon(objects[2].getCenter(), glm::radians(10.0f), glm::radians(-5.0f), glm::radians(planetOrbit));
+			obj.moveMoon(objects[1].getCenter(), glm::radians(10.0f), glm::radians(-5.0f), glm::radians(planetOrbit));
 		}
 		i++;
 	}

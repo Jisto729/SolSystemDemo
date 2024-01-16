@@ -87,7 +87,7 @@ Renderer::Renderer(QOpenGLContext* context, int width, int height, const qreal p
 void Renderer::render(std::shared_ptr<Scene> scene)
 {
 	gl->glViewport(0, 0, windowWidth * retinaScale, windowHeight * retinaScale);
-	gl->glClearColor(.392, .584, 0.929, 1.0);
+	gl->glClearColor(0.0, 0.0, 0.0, 1.0);
 	gl->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	scene->updateModelMatrices(SSBO, normalObject);

@@ -13,7 +13,6 @@ namespace ssd
 		void moveObjects();
 		inline std::vector<SceneObject> getObjects() { return objects; }
 
-
 		inline std::shared_ptr<ge::gl::Buffer> getVerticesBuff(ObjectType type) 
 		{
 			return (type == normalObject) ? verticesBuff : lightVerticesBuff;
