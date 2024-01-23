@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include <QtGui/QWindow>
-//#include <Q>
 #include <geGL/geGL.h>
 #include <memory>
 #include "Camera.h"

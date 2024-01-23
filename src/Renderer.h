@@ -24,15 +24,6 @@ namespace ssd
 		int windowWidth;
 		int windowHeight;
 
-		//std::vector<float> trianglePos;
-		//std::vector<float> triangleCol;
-		//std::vector<int> indices;
-
-		//std::shared_ptr<ge::gl::Buffer> positions;
-		//std::shared_ptr<ge::gl::Buffer> colors;
-		//std::shared_ptr<ge::gl::Buffer> elementBuffer;
-
-
 		std::shared_ptr<ge::gl::Context> gl;
 		std::shared_ptr<ge::gl::Program> shaderProgram;
 		std::shared_ptr<ge::gl::Program> lightShaderProgram;
@@ -40,6 +31,10 @@ namespace ssd
 		std::shared_ptr<ge::gl::VertexArray> lightVAO;
 		std::shared_ptr<ge::gl::Buffer> SSBO;
 		std::shared_ptr<ge::gl::Buffer> lightSSBO;
+
+		//TODO move somewhere else
+		std::shared_ptr<ge::gl::Texture> texture;
+		GLuint textureID = 0;
 
 		QOpenGLContext* context;
 

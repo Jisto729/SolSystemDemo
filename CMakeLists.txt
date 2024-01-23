@@ -52,6 +52,8 @@ set(SOURCE_FILES
    src/SceneObject.h src/SceneObject.cpp
    src/Renderer.h src/Renderer.cpp
    src/Camera.h src/Camera.cpp
+   src/SunSceneObject.h src/SunSceneObject.cpp
+   stb/stb_image.h
 )
 
 add_executable(${APP_NAME} ${SOURCE_FILES})

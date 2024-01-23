@@ -9,6 +9,9 @@
 #include <glm/gtx/string_cast.hpp>
 #include "Camera.h"
 
+//#include <stb_image.h>
+
+#include "SunTexture.h"
 
 using namespace ssd;
 
@@ -72,8 +75,30 @@ Renderer::Renderer(QOpenGLContext* context, int width, int height, const qreal p
 
 	glm::mat4 matrix = camera->getMatrix();
 
+	std::shared_ptr<ssl::SunTexture> textureObject = scene->getLightObjects()[0].getTexture();
+	std::vector<std::vector<float>> texVector = textureObject->getCurrentTexture();
+
+	texture = std::make_shared<ge::gl::Texture>(GL_TEXTURE_CUBE_MAP, GL_RGBA, 0, textureObject->getWidth(), textureObject->getHeight());
+	std::cout << texture->getId() << std::endl;
+	std::cout << texture->getInfo() << std::endl;
+
+	texture->bind(texture->getId());
+
+	texture->setData2D(texVector[0].data(), GL_RGB, GL_FLOAT, 0, GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, 0, textureObject->getWidth(), textureObject->getHeight(), 0);
+	texture->setData2D(texVector[1].data(), GL_RGB, GL_FLOAT, 0, GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, 0, textureObject->getWidth(), textureObject->getHeight(), 0);
+	texture->setData2D(texVector[2].data(), GL_RGB, GL_FLOAT, 0, GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, 0, textureObject->getWidth(), textureObject->getHeight(), 0);
+	texture->setData2D(texVector[3].data(), GL_RGB, GL_FLOAT, 0, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, 0, textureObject->getWidth(), textureObject->getHeight(), 0);
+	texture->setData2D(texVector[5].data(), GL_RGB, GL_FLOAT, 0, GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, 0, textureObject->getWidth(), textureObject->getHeight(), 0);
+	texture->setData2D(texVector[4].data(), GL_RGB, GL_FLOAT, 0, GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, 0, textureObject->getWidth(), textureObject->getHeight(), 0);
+
+	texture->generateMipmap();
+
+	std::cout << texture->getInfo() << texture->getId() << std::endl;
+	std::cout << texture->getId() << std::endl;
+
 	//TODO get from objects
 	lightShaderProgram->setMatrix4fv("camMatrix", glm::value_ptr(matrix))
+		->set1i("lightTexture", texture->getId())
 		->bindBuffer("perDrawData_t", lightSSBO);
 
 	lightVAO = std::make_shared<ge::gl::VertexArray>();
@@ -82,10 +107,25 @@ Renderer::Renderer(QOpenGLContext* context, int width, int height, const qreal p
 	lightVAO->addAttrib(scene->getVerticesBuff(lightObject), 0, 3, GL_FLOAT);
 	lightVAO->addAttrib(scene->getColorsBuff(lightObject), 1, 3, GL_FLOAT);
 	lightVAO->addAttrib(scene->getModelIDsBuff(lightObject), 2, 1, GL_FLOAT);
+	lightVAO->addAttrib(scene->getTexBuff(), 3, 3, GL_FLOAT);
+	texture->unbind(texture->getId());
+
 }
 
 void Renderer::render(std::shared_ptr<Scene> scene)
 {
+	//TODO create a class for all of this
+	texture->bind(texture->getId());
+	std::shared_ptr<ssl::SunTexture> textureObject = scene->getLightObjects()[0].getTexture();
+	std::vector<std::vector<float>> texVector = textureObject->getCurrentTexture();
+	texture->setData2D(texVector[0].data(), GL_RGB, GL_FLOAT, 0, GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, 0, textureObject->getWidth(), textureObject->getHeight(), 0);
+	texture->setData2D(texVector[1].data(), GL_RGB, GL_FLOAT, 0, GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, 0, textureObject->getWidth(), textureObject->getHeight(), 0);
+	texture->setData2D(texVector[2].data(), GL_RGB, GL_FLOAT, 0, GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, 0, textureObject->getWidth(), textureObject->getHeight(), 0);
+	texture->setData2D(texVector[3].data(), GL_RGB, GL_FLOAT, 0, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, 0, textureObject->getWidth(), textureObject->getHeight(), 0);
+	texture->setData2D(texVector[5].data(), GL_RGB, GL_FLOAT, 0, GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, 0, textureObject->getWidth(), textureObject->getHeight(), 0);
+	texture->setData2D(texVector[4].data(), GL_RGB, GL_FLOAT, 0, GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, 0, textureObject->getWidth(), textureObject->getHeight(), 0);
+	texture->generateMipmap();
+
 	gl->glViewport(0, 0, windowWidth * retinaScale, windowHeight * retinaScale);
 	gl->glClearColor(0.0, 0.0, 0.0, 1.0);
 	gl->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -102,12 +142,17 @@ void Renderer::render(std::shared_ptr<Scene> scene)
 	shaderProgram->use();
 	VAO->bind();
 	gl->glEnable(GL_DEPTH_TEST);
+	gl->glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 	gl->glDrawElements(GL_TRIANGLES, scene->getIndicesBuff(normalObject)->getSize(), GL_UNSIGNED_INT, nullptr);
 
 	lightShaderProgram->setMatrix4fv("camMatrix", glm::value_ptr(camera->getMatrix()))
+		->set1i("lightTexture", texture->getId())
 		->bindBuffer("perDrawData_t", lightSSBO);
 	lightShaderProgram->use();
 	lightVAO->bind();
 	gl->glEnable(GL_DEPTH_TEST);
+	gl->glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 	gl->glDrawElements(GL_TRIANGLES, scene->getIndicesBuff(lightObject)->getSize(), GL_UNSIGNED_INT, nullptr);
+	texture->unbind(texture->getId());
+
 }

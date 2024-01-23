@@ -20,7 +20,7 @@ namespace ssd {
 		float nearPlane;
 		float farPlane;
 
-		float speed = 0.05f;
+		float speed = 0.15f;
 
 		glm::mat4 cameraMatrix = glm::mat4(1.0f);
 		glm::mat4 projectionMatrix = glm::mat4(1.0f);

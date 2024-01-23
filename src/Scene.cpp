@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include "SunSceneObject.h"
 #include <algorithm>
 #include <glm/gtx/string_cast.hpp>
 
@@ -13,11 +14,12 @@ Scene::Scene()
 	std::vector<float> normals;
 	std::vector<float> colors;
 	std::vector<int> indices;
+	std::vector<float> texCoords;
 	//should probably be unsigned int, but can't seem to make that work
 	std::vector<float> modelIDs;
 
 	std::vector<ssl::CubeSphere> cubeLights;
-	ssl::CubeSphere cubeSun = ssl::CubeSphere(1.0, 4);
+	ssl::CubeSphere cubeSun = ssl::CubeSphere(3.0, 4);
 	cubeSun.setColor(glm::vec3(1.0, 0.5, 1.0));
 	cubeLights.push_back(cubeSun); //sun
 
@@ -28,6 +30,7 @@ Scene::Scene()
 		std::vector<float> objVertices = light.getVertices();
 		std::vector<float> objColors = light.getColors();
 		std::vector<int> objIndices = light.getIndices();
+		std::vector<float> objTexCoords = light.getTexCoords();
 
 		//for each vertex a modelID is added also
 		for (int i = 0; i < objVertices.size(); i += 3)
@@ -42,22 +45,32 @@ Scene::Scene()
 			index += indexOffset;
 		}
 
+		//TODO temporary
+		lightObjects.push_back(SunSceneObject(objVertices, objColors, objIndices, light.getCenter(), lightObject));
+		
 		objects.push_back(SceneObject(objVertices, objColors, objIndices, light.getCenter(), lightObject));
 		vertices.insert(vertices.end(), objVertices.begin(), objVertices.end());
 		colors.insert(colors.end(), objColors.begin(), objColors.end());
 		indices.insert(indices.end(), objIndices.begin(), objIndices.end());
+		texCoords.insert(texCoords.end(), objTexCoords.begin(), objTexCoords.end());
 		modelID++;
 	}
 
 	lightVerticesBuff = std::make_shared<ge::gl::Buffer>(vertices.size() * sizeof(float), vertices.data());
 	lightColorsBuff = std::make_shared<ge::gl::Buffer>(colors.size() * sizeof(float), colors.data());
 	lightIndicesBuff = std::make_shared<ge::gl::Buffer>(indices.size() * sizeof(int), indices.data());
+	lightTexBuff = std::make_shared<ge::gl::Buffer>(texCoords.size() * sizeof(float), texCoords.data());
 	lightModelIDsBuff = std::make_shared<ge::gl::Buffer>(modelIDs.size() * sizeof(float), modelIDs.data());
 
 	vertices.clear();
 	colors.clear();
 	indices.clear();
 	modelIDs.clear();
+
+	for (float coord : texCoords)
+	{
+		//std::cout << coord << std::endl;
+	}
 
 	std::vector<ssl::Sphere> spheres;
 
@@ -117,7 +130,7 @@ void Scene::moveObjects()
 		if (i == 0)
 		//sun
 		{
-			obj.revolveAroundPoint(systemCenter, glm::radians(1.0f));
+			obj.revolveAroundPoint(systemCenter, glm::radians(0.3f));
 		} else if (i == 1)
 		//planet
 		{
@@ -128,6 +141,14 @@ void Scene::moveObjects()
 			obj.moveMoon(objects[1].getCenter(), glm::radians(10.0f), glm::radians(-5.0f), glm::radians(planetOrbit));
 		}
 		i++;
+	}
+}
+
+void Scene::animateSurfaces()
+{
+	for (SunSceneObject& obj : lightObjects)
+	{
+		obj.animateTexture();
 	}
 }
 
