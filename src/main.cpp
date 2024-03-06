@@ -1,16 +1,18 @@
 
 #include <QtGui/QGuiApplication>
 #include <SolDemoWindow.h>
+#include <AppWindow.h>
 #include <QtGui/QOpenGLContext>
+#include <QApplication>
 
 //! [main]
 int main(int argc, char** argv)
 {
-	QGuiApplication app(argc, argv);
+	QApplication app(argc, argv);
 
-	ssd::SolDemoWindow window;
-	window.resize(800, 800);
-	window.show();
+	ssd::AppWindow appWind;
+	appWind.resize(1000, 800);
+	appWind.show();
 
 	return app.exec();
 }

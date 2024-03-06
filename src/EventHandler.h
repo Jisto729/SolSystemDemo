@@ -8,10 +8,16 @@ namespace ssd {
 	public:
 		EventHandler(std::shared_ptr<Camera> cameraPtr);
 		bool event(QEvent* event);
-		bool event(QEvent* event, int windowWidth, int windowHeight);
+		//bool event(QEvent* event, int windowWidth, int windowHeight);
+		bool checkFirstMove();
+		bool isMousePressed();
+		void handleMouse(int windowWidth, int windowHeight);
 	private:
 		void handleKeyboard(int key, bool isPressed);
-		void EventHandler::handleMouse(int x, int y, int windowWidth, int windowHeight);
+		bool firstMove = true;
+		bool mousePressed;
+		int mouseX;
+		int mouseY;
 		std::shared_ptr<Camera> camera;
 	};
 }

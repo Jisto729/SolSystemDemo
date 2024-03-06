@@ -25,7 +25,7 @@ vec3 CalculateLight()
 {
     vec3 resultColor = vec3(0.0, 0.0, 0.0);
     // //TODO add all the coefficients from the light objects
-    float ambientLight = 0.1;
+    float ambientLight = 0.01;
     float diffuseLight = 0.8;
     float specularLight = 0.5;
     float specShine = 8;
@@ -58,7 +58,7 @@ vec3 CalculateLight()
         vec3 viewDir = normalize(camPosition - attribs.fragPos);
         vec3 lightDir = normalize(currentLightPosition - attribs.fragPos);
         // diffuse shading
-        float diff = max(dot(attribs.normal, lightDir), 0.0);
+        float diff = max(dot(-attribs.normal, lightDir), 0.0);
         // specular shading
         vec3 reflectDir = reflect(-lightDir, attribs.normal);
         float spec = pow(max(dot(viewDir, reflectDir), 0.0), specShine);
@@ -67,7 +67,8 @@ vec3 CalculateLight()
         vec3 diffuse  = diffuseLight * diff * currentColor;
         vec3 specular = specularLight * spec * currentColor;
 
-        resultColor += ambient + diffuse + specular;
+        resultColor += ambient + diffuse;// + specular;
+        resultColor = diffuse;
         }
         return resultColor;
 }

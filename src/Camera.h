@@ -39,8 +39,8 @@ namespace ssd {
 
 		float getSpeed() { return speed; }
 
-		float sensitivityX = 100;
-		float sensitivityY = 100;
+		float sensitivityX = 4;
+		float sensitivityY = 4;
 
 		glm::mat4 Camera::getMatrix() const { return cameraMatrix; };
 

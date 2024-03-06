@@ -38,6 +38,35 @@ find_file(lightFragmentShader lightFrag.glsl
         HINTS ${DEFAULT_RESOURCES_PATH}/shaders
 )
 
+find_file(combineVertexShader combineVert.glsl
+        HINTS ${DEFAULT_RESOURCES_PATH}/shaders
+)
+
+find_file(combineFragmentShader combineFrag.glsl
+        HINTS ${DEFAULT_RESOURCES_PATH}/shaders
+)
+
+find_file(blurVertexShader blurVert.glsl
+        HINTS ${DEFAULT_RESOURCES_PATH}/shaders
+)
+
+find_file(blurFragmentShader blurFrag.glsl
+        HINTS ${DEFAULT_RESOURCES_PATH}/shaders
+)
+
+find_file(screenQuadVertexShader screenQuadVert.glsl
+        HINTS ${DEFAULT_RESOURCES_PATH}/shaders
+)
+
+find_file(bloomUpFragmentShader bloomUpsampleFrag.glsl
+        HINTS ${DEFAULT_RESOURCES_PATH}/shaders
+)
+
+find_file(bloomDownFragmentShader bloomDownsampleFrag.glsl
+        HINTS ${DEFAULT_RESOURCES_PATH}/shaders
+)
+
+
 set(${APP_NAME}_RESOURCES "${DEFAULT_RESOURCES_PATH}" CACHE PATH "Relative or absolute path to Application resources.")
 
 set(HEADER_PATH src)
@@ -46,6 +75,7 @@ get_filename_component(src_abs ${SOURCE_PATH} ABSOLUTE)
 
 set(SOURCE_FILES
    src/main.cpp
+   src/appWindow.h src/appWindow.cpp
    src/SolDemoWindow.h src/SolDemoWindow.cpp
    src/EventHandler.h src/EventHandler.cpp
    src/Scene.h src/Scene.cpp
@@ -53,7 +83,10 @@ set(SOURCE_FILES
    src/Renderer.h src/Renderer.cpp
    src/Camera.h src/Camera.cpp
    src/SunSceneObject.h src/SunSceneObject.cpp
-   stb/stb_image.h
+   src/GenAttributes.h src/GenAttributes.cpp
+   src/BloomRenderer.h src/BloomRenderer.cpp
+   src/SunRenderer.h src/SunRenderer.cpp
+   src/PlanetRenderer.h src/PlanetRenderer.cpp
 )
 
 add_executable(${APP_NAME} ${SOURCE_FILES})
@@ -66,6 +99,13 @@ add_compile_definitions(
     VERTEX_SHADER=\"${vertexShader}\"
     LIGHT_FRAGMENT_SHADER=\"${lightFragmentShader}\"
     LIGHT_VERTEX_SHADER=\"${lightVertexShader}\"
+    COMBINE_FRAGMENT_SHADER=\"${combineFragmentShader}\" 
+    COMBINE_VERTEX_SHADER=\"${combineVertexShader}\"
+    BLUR_FRAGMENT_SHADER=\"${blurFragmentShader}\" 
+    BLUR_VERTEX_SHADER=\"${blurVertexShader}\"
+    BLOOM_UP_FRAGMENT_SHADER=\"${bloomUpFragmentShader}\"
+    BLOOM_DOWN_FRAGMENT_SHADER=\"${bloomDownFragmentShader}\"
+    SCREEN_QUAD_VERTEX_SHADER=\"${screenQuadVertexShader}\"
 )
 
 set_target_properties(${APP_NAME} PROPERTIES COMPILE_DEFINITIONS "APP_RESOURCES=\"${${APP_NAME}_RESOURCES}\"")

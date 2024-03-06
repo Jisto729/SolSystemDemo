@@ -4,6 +4,7 @@
 #include <geGL/geGL.h>
 #include "SceneObject.h"
 #include "SunSceneObject.h"
+#include "GenAttributes.h"
 
 namespace ssd
 {
@@ -38,6 +39,7 @@ namespace ssd
 		std::vector<glm::vec3> getLightColors();
 		int getLightCount();
 		void updateModelMatrices(std::shared_ptr<ge::gl::Buffer> SSBO, ObjectType type);
+		void update(GenAttributes attribs);
 	
 	private:
 		std::vector<SceneObject> objects;
